@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Meta.DataConfig.GridConfig
   <Width>k__BackingField: 7
   <Height>k__BackingField: 9
-  <CellSize>k__BackingField: 1
+  <CellSize>k__BackingField: 0.4
