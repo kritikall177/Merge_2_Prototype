@@ -20,6 +20,8 @@ namespace _Project._Code.Meta
             Container.BindFactory<GridCell, GridCell.Factory>().FromComponentInNewPrefab(_gridCellPrefab);
             
             Container.BindInterfacesTo<GridSystem>().AsSingle();
+
+            Container.BindInterfacesTo<TriggerRayEmitter>().FromNew().AsSingle().NonLazy();
         }
     }
 }
