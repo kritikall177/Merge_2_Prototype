@@ -38,7 +38,7 @@ namespace _Project._Code
         
         private void OnTriggerEvent()
         {
-            RayHit()?.TriggerGridObject();
+            RayHit()?.TriggerGridCell();
         }
         
 
@@ -47,7 +47,7 @@ namespace _Project._Code
             Vector2 cursorPosition = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             
             RaycastHit2D hit = Physics2D.Raycast(cursorPosition, Vector2.zero);
-    
+            
             if (hit.collider != null && hit.collider.gameObject.TryGetComponent<IGridCell>(out var gridCell))
             {
                 return gridCell;
