@@ -8,5 +8,7 @@ namespace _Project._Code.Meta.DataConfig
         [field: SerializeField, Min(0)] public int Width { get; set; }
         [field: SerializeField, Min(0)] public int Height { get; set; }
         [field: SerializeField, Range(0.3f, 0.4f)] public float CellSize { get; set; }
+        [field: SerializeField] public Color DefaultColor { get; set; } = Color.white;
+        [field: SerializeField] public Color SelectedColor { get; set; } = Color.chartreuse;
     }
 }

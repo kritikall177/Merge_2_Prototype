@@ -1,9 +1,8 @@
 ﻿using _Project._Code.Core.Gird;
 using _Project._Code.Meta.DataConfig;
-using UnityEngine;
 using Zenject;
 
-namespace _Project._Code.Core
+namespace _Project._Code.Core.SpawnerObject
 {
     public class SpawnerPool : MemoryPool<GridCell, SpawnerParams, ISpawner>
     {

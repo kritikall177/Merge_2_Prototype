@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using _Project._Code.Core.SpawnerObject;
+using _Project._Code.Meta.DataConfig;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -10,35 +12,27 @@ namespace _Project._Code.Core.Gird
         public GridPosition GridPosition { get; private set; }
         
         [SerializeField] private SpriteRenderer _sprite;
-        
-        //вынести в конфиг
-        private Color _defaultColor = Color.white;
-        private Color _selectedColor = Color.chartreuse;
-        
+
         private ISpawner _spawner;
-        
-        public void Initialize(GridPosition gridPosition, float gridScale, ISpawner spawner = null)
+        private Color _defaultColor;
+        private Color _selectedColor;
+
+        public void Initialize(GridPosition gridPosition, IGridConfig gridConfig, ISpawner spawner = null)
         {
             GridPosition = gridPosition;
             transform.position = new Vector3(gridPosition.x, gridPosition.y);
-            transform.localScale = new Vector3(gridScale, gridScale, gridScale);
+            transform.localScale = new Vector3(gridConfig.CellSize, gridConfig.CellSize, gridConfig.CellSize);
             _spawner = spawner;
+            _defaultColor = gridConfig.DefaultColor;
+            _selectedColor = gridConfig.SelectedColor;
             _sprite.color = _defaultColor;
         }
 
-        public void TriggerGridCell()
-        {
-            _spawner?.Activate();
-        }
-        public void SelectGridCell()
-        {
-            _sprite.color = _selectedColor;
-        }
+        public void TriggerGridCell() => _spawner?.Activate();
 
-        public void UnselectGridCell()
-        {
-            _sprite.color = _defaultColor;
-        }
+        public void SelectGridCell() => _sprite.color = _selectedColor;
+
+        public void UnselectGridCell() => _sprite.color = _defaultColor;
 
         public void AddSpawner(ISpawner spawner) => _spawner = spawner;
 

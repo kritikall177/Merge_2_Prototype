@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Project._Code.Core.SpawnerObject;
 using _Project._Code.Meta.DataConfig;
 using UnityEngine;
 using Zenject;
@@ -35,7 +36,7 @@ namespace _Project._Code.Core.Gird
                     GridPosition gridPosition = new GridPosition(x, y);
                     _gridCellArray[x, y] = _gridCellFactory.Create();
                     _gridCellArray[x, y].transform.SetParent(_gridParent.transform);
-                    _gridCellArray[x, y].Initialize(gridPosition, _gridConfig.CellSize);
+                    _gridCellArray[x, y].Initialize(gridPosition, _gridConfig);
                 }
             }
             
@@ -125,7 +126,8 @@ namespace _Project._Code.Core.Gird
 
         private GridCell TryGetGridCellFromPosition(GridPosition gridPosition)
         {
-            if (gridPosition.x >= 0 && gridPosition.x < _gridCellArray.GetLength(0) && gridPosition.y >= 0 && gridPosition.y < _gridCellArray.GetLength(1))
+            if (gridPosition.x >= 0 && gridPosition.x < _gridCellArray.GetLength(0) && gridPosition.y >= 0 
+                && gridPosition.y < _gridCellArray.GetLength(1))
             {
                 return _gridCellArray[gridPosition.x, gridPosition.y];
             }

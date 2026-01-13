@@ -51,15 +51,9 @@ namespace _Project._Code.Meta.UI
 
         private void OnDestroy()
         {
-            if (_button)
-            {
-                _button.onClick.RemoveListener(OnButtonClick);
-            }
+            if (_button) _button.onClick.RemoveListener(OnButtonClick);
             
-            if (_cooldownCoroutine != null)
-            {
-                StopCoroutine(_cooldownCoroutine);
-            }
+            if (_cooldownCoroutine != null) StopCoroutine(_cooldownCoroutine);
         }
     }
 }

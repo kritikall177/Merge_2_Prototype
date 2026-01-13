@@ -55,46 +55,32 @@ namespace _Project._Code.Meta.DataConfig
             EditorGUI.LabelField(position, $"Уровень {levelProp.intValue}", EditorStyles.boldLabel);
             position.y += EditorGUIUtility.singleLineHeight + 4;
 
-            int prevChance = prevChanceProp.intValue;
-            int sameChance = sameChanceProp.intValue;
-            float nextChance = 100f - prevChance - sameChance;
-            
-            int maxForPrev = 100 - sameChance;
-            int maxForSame = 100 - prevChance;
+            var prevChance = prevChanceProp.intValue;
+            var sameChance = sameChanceProp.intValue;
+            var nextChance = 100f - prevChance - sameChance;
 
-            EditorGUI.IntSlider(
-                position, 
-                prevChanceProp, 
-                0, 
-                maxForPrev,
-                new GUIContent($"Шанс уровня ниже ({prevChance}%)")
-            );
+            var maxForPrev = 100 - sameChance;
+            var maxForSame = 100 - prevChance;
+
+            EditorGUI.IntSlider(position, prevChanceProp, 0, maxForPrev,
+                new GUIContent($"Шанс уровня ниже ({prevChance}%)"));
             position.y += EditorGUIUtility.singleLineHeight + 2;
-            
+
             prevChance = prevChanceProp.intValue;
             maxForSame = 100 - prevChance;
 
-            EditorGUI.IntSlider(
-                position, 
-                sameChanceProp, 
-                0, 
-                maxForSame,
-                new GUIContent($"Шанс этого уровня ({sameChance}%)")
-            );
+            EditorGUI.IntSlider(position, sameChanceProp, 0, maxForSame,
+                new GUIContent($"Шанс этого уровня ({sameChance}%)"));
             position.y += EditorGUIUtility.singleLineHeight + 2;
-            
+
             sameChance = sameChanceProp.intValue;
             nextChance = 100f - prevChance - sameChance;
-            
+
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUI.FloatField(
-                position, 
-                "Шанс уровня выше", 
-                nextChance
-            );
+            EditorGUI.FloatField(position, "Шанс уровня выше", nextChance);
             EditorGUI.EndDisabledGroup();
             position.y += EditorGUIUtility.singleLineHeight + 2;
-            
+
             EditorGUI.EndProperty();
         }
 
@@ -104,10 +90,4 @@ namespace _Project._Code.Meta.DataConfig
         }
     }
 #endif
-
-    public interface ISpawnerConfig
-    {
-        public SpawnerParams GetParams(int level);
-        public int MaxLvl { get; }
-    }
 }
