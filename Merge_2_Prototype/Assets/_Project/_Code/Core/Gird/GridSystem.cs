@@ -140,9 +140,11 @@ namespace _Project._Code.Core.Gird
             float visibleHeight = camera.orthographicSize * 2f;
             float visibleWidth = visibleHeight * camera.aspect;
         
+            float offsetCoefficient = 0.75f;
+            
             float targetGridScale = Mathf.Min(
-                visibleWidth * 0.85f / _gridConfig.Width,
-                visibleHeight * 0.85f / _gridConfig.Height
+                visibleWidth * offsetCoefficient / _gridConfig.Width,
+                visibleHeight * offsetCoefficient / _gridConfig.Height
             );
         
             _gridParent.transform.localScale = Vector3.one * targetGridScale;
