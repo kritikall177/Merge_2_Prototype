@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-namespace _Project._Code
+namespace _Project._Code.Core
 {
     public class TriggerRayEmitter : IInitializable, IDisposable
     {
