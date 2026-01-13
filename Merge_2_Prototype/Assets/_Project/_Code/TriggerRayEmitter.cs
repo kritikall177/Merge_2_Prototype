@@ -65,7 +65,7 @@ namespace _Project._Code
 
         private IGridCell RayHit()
         {
-            Vector2 cursorPosition = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector2 cursorPosition = _camera.ScreenToWorldPoint(Pointer.current.position.ReadValue());
             
             RaycastHit2D hit = Physics2D.Raycast(cursorPosition, Vector2.zero);
             

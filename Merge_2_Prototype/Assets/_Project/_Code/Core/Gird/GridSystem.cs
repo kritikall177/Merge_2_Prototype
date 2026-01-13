@@ -42,7 +42,7 @@ namespace _Project._Code.Core.Gird
             ScaleGridToScreen();
         }
 
-        public void AddObjectToRandomGridCell(int spawnerLvl, float chanceOnSameLvlSpawn)
+        public void AddObjectToRandomGridCell(int spawnerLvl, bool withoutCheckingChance = false)
         {
             List<GridPosition> freeGridPositions = new List<GridPosition>(_gridCellArray.Length) ;
             
@@ -61,20 +61,41 @@ namespace _Project._Code.Core.Gird
             if (freeGridPositions.Count != 0)
             {
                 int randomIndex = Random.Range(0, freeGridPositions.Count);
-                AddObjectToGrid(freeGridPositions[randomIndex], SpawnerLvlCalculate(spawnerLvl, chanceOnSameLvlSpawn));
+                if (withoutCheckingChance)
+                {
+                    AddObjectToGrid(freeGridPositions[randomIndex], spawnerLvl);
+                }
+                else
+                {
+                    AddObjectToGrid(freeGridPositions[randomIndex], SpawnerLvlCalculate(spawnerLvl));
+                }
             }
         }
 
-        private int SpawnerLvlCalculate(int currentLvl, float chanceOnSameLvlSpawn)
+        public void TryMergeGridPosition(GridPosition gridPosition1, GridPosition gridPosition2)
         {
-            if (Random.Range(0f, 100f) <= chanceOnSameLvlSpawn)
+            ISpawner spawner = TryGetGridCellFromPosition(gridPosition1).GetSpawner();
+            ISpawner spawner2 = TryGetGridCellFromPosition(gridPosition2).GetSpawner();
+            if (spawner != null && spawner2 != null)
             {
-                return currentLvl;
+                if (spawner.SpawnerLvl == spawner2.SpawnerLvl && spawner.SpawnerLvl < _spawnerConfig.MaxLvl)
+                {
+                    DeleteObjectFromGrid(gridPosition1);
+                    DeleteObjectFromGrid(gridPosition2);
+                    AddObjectToGrid(gridPosition2, spawner.SpawnerLvl + 1);
+                }
             }
-            else
-            {
-                return currentLvl + 1;
-            }
+        }
+
+        private int SpawnerLvlCalculate(int currentLvl)
+        {
+            SpawnerParams spawnerParams = _spawnerConfig.GetParams(currentLvl);
+            int randomValue = Random.Range(0, 100);
+            
+            if (randomValue < spawnerParams.ChanceOnPrevLvlSpawn) return Mathf.Max(1, currentLvl - 1);
+            if (randomValue < spawnerParams.ChanceOnPrevLvlSpawn + spawnerParams.ChanceOnSameLvlSpawn) return currentLvl;
+
+            return Mathf.Min(_spawnerConfig.MaxLvl, currentLvl + 1);
         }
 
         private void AddObjectToGrid(GridPosition gridPosition, int spawnerLvl)
@@ -97,21 +118,6 @@ namespace _Project._Code.Core.Gird
                 {
                     gridCell.DeleteSpawner();
                     _spawnerPool.Despawn(gridObject);
-                }
-            }
-        }
-
-        public void TryMergeGridPosition(GridPosition gridPosition1, GridPosition gridPosition2)
-        {
-            ISpawner spawner = TryGetGridCellFromPosition(gridPosition1).GetSpawner();
-            ISpawner spawner2 = TryGetGridCellFromPosition(gridPosition2).GetSpawner();
-            if (spawner != null && spawner2 != null)
-            {
-                if (spawner.SpawnerLvl == spawner2.SpawnerLvl && spawner.SpawnerLvl < _spawnerConfig.MaxLvl)
-                {
-                    DeleteObjectFromGrid(gridPosition1);
-                    DeleteObjectFromGrid(gridPosition2);
-                    AddObjectToGrid(gridPosition2, spawner.SpawnerLvl + 1);
                 }
             }
         }

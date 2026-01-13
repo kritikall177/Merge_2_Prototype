@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf835b3dc73b41c1aa339d58ad3f0e43, type: 3}
   m_Name: SpawnerConfig
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Meta.DataConfig.SpawnerConfig
-  _spawnerParams:
+  _spawnerParamsList:
   - SpawnerLvl: 1
+    ChanceOnPrevLvlSpawn: 0
     ChanceOnSameLvlSpawn: 90
   - SpawnerLvl: 2
+    ChanceOnPrevLvlSpawn: 50
     ChanceOnSameLvlSpawn: 50

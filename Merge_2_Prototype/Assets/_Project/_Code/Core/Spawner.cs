@@ -15,8 +15,6 @@ namespace _Project._Code.Core
         [SerializeField] private TMP_Text _lvlText;
         
         private IGridSystem _gridSystem;
-        private float _chanceOnSameLvlSpawn;
-
 
         [Inject]
         public void Construct(IGridSystem gridSystem)
@@ -28,13 +26,12 @@ namespace _Project._Code.Core
         {
             SpawnerLvl =  spawnerParams.SpawnerLvl;
             _lvlText.SetText($"{SpawnerLvl}");
-            _chanceOnSameLvlSpawn = spawnerParams.ChanceOnSameLvlSpawn;
         }
 
         public void Activate()
         {
             Debug.Log("Activate Spawner");
-            _gridSystem.AddObjectToRandomGridCell(SpawnerLvl, _chanceOnSameLvlSpawn);
+            _gridSystem.AddObjectToRandomGridCell(SpawnerLvl);
         }
     }
 

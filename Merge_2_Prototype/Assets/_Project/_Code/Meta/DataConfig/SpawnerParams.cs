@@ -1,15 +1,17 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Project._Code.Meta.DataConfig
 {
-    [Serializable]
+    [System.Serializable]
     public struct SpawnerParams
     {
         public int SpawnerLvl;
         
-        [Range(0, 100)] public float ChanceOnSameLvlSpawn;
-
-        public float ChanceOnNextLvlSpawn => 100f - ChanceOnSameLvlSpawn;
+        [Range(0, 100)] public int ChanceOnPrevLvlSpawn;
+        
+        [Range(0, 100)] public int ChanceOnSameLvlSpawn;
+        
+        public float ChanceOnNextLvlSpawn => 100f - ChanceOnPrevLvlSpawn - ChanceOnSameLvlSpawn;
+        
     }
 }

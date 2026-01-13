@@ -9,23 +9,19 @@ namespace _Project._Code.Meta.DataConfig
     [CreateAssetMenu(fileName = "SpawnerConfig", menuName = "Data/Spawner Config")]
     public class SpawnerConfig : ScriptableObject, ISpawnerConfig
     {
-        [SerializeField] private List<SpawnerParams> _spawnerParams = new();
+        [SerializeField] private List<SpawnerParams> _spawnerParamsList = new();
 
-        public IReadOnlyList<SpawnerParams> SpawnerParams => _spawnerParams;
-
-        public int MaxLvl => _spawnerParams.Count;
+        public IReadOnlyList<SpawnerParams> SpawnerParamsList => _spawnerParamsList;
+        public int MaxLvl => _spawnerParamsList.Count;
 
         public SpawnerParams GetParams(int level)
         {
-            if (level < 1) return _spawnerParams[0];
-
-            if (level > _spawnerParams.Count) return _spawnerParams[^1];
-
-            return _spawnerParams[level - 1];
+            if (level < 1) return _spawnerParamsList[0];
+            if (level > _spawnerParamsList.Count) return _spawnerParamsList[^1];
+            return _spawnerParamsList[level - 1];
         }
 
 #if UNITY_EDITOR
-
         private void OnValidate()
         {
             LevelUpdater();
@@ -33,11 +29,11 @@ namespace _Project._Code.Meta.DataConfig
 
         private void LevelUpdater()
         {
-            for (var i = 0; i < _spawnerParams.Count; i++)
+            for (var i = 0; i < _spawnerParamsList.Count; i++)
             {
-                var param = _spawnerParams[i];
+                var param = _spawnerParamsList[i];
                 param.SpawnerLvl = i + 1;
-                _spawnerParams[i] = param;
+                _spawnerParamsList[i] = param;
             }
         }
 #endif
@@ -52,31 +48,63 @@ namespace _Project._Code.Meta.DataConfig
             EditorGUI.BeginProperty(position, label, property);
 
             var levelProp = property.FindPropertyRelative("SpawnerLvl");
+            var prevChanceProp = property.FindPropertyRelative("ChanceOnPrevLvlSpawn");
             var sameChanceProp = property.FindPropertyRelative("ChanceOnSameLvlSpawn");
 
             position.height = EditorGUIUtility.singleLineHeight;
             EditorGUI.LabelField(position, $"Уровень {levelProp.intValue}", EditorStyles.boldLabel);
             position.y += EditorGUIUtility.singleLineHeight + 4;
 
-            var sameChance = sameChanceProp.floatValue;
-            var nextChance = 100f - sameChance;
+            int prevChance = prevChanceProp.intValue;
+            int sameChance = sameChanceProp.intValue;
+            float nextChance = 100f - prevChance - sameChance;
+            
+            int maxForPrev = 100 - sameChance;
+            int maxForSame = 100 - prevChance;
 
-            EditorGUI.Slider(position, sameChanceProp, 0, 100,
-                new GUIContent($"Шанс этого уровня ({sameChance:F1}%)",
-                    "Вероятность появления предмета текущего уровня"));
+            EditorGUI.IntSlider(
+                position, 
+                prevChanceProp, 
+                0, 
+                maxForPrev,
+                new GUIContent($"Шанс уровня ниже ({prevChance}%)")
+            );
             position.y += EditorGUIUtility.singleLineHeight + 2;
+            
+            prevChance = prevChanceProp.intValue;
+            maxForSame = 100 - prevChance;
 
-            EditorGUI.LabelField(position, $"Шанс след. уровня: {nextChance:F1}%", EditorStyles.miniLabel);
-
+            EditorGUI.IntSlider(
+                position, 
+                sameChanceProp, 
+                0, 
+                maxForSame,
+                new GUIContent($"Шанс этого уровня ({sameChance}%)")
+            );
+            position.y += EditorGUIUtility.singleLineHeight + 2;
+            
+            sameChance = sameChanceProp.intValue;
+            nextChance = 100f - prevChance - sameChance;
+            
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUI.FloatField(
+                position, 
+                "Шанс уровня выше", 
+                nextChance
+            );
+            EditorGUI.EndDisabledGroup();
+            position.y += EditorGUIUtility.singleLineHeight + 2;
+            
             EditorGUI.EndProperty();
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return (EditorGUIUtility.singleLineHeight + 2) * 3 + 2;
+            return (EditorGUIUtility.singleLineHeight + 2) * 5 + 2;
         }
     }
 #endif
+
     public interface ISpawnerConfig
     {
         public SpawnerParams GetParams(int level);
