@@ -15,15 +15,13 @@ namespace _Project._Code.Meta.DataConfig
 
         public int MaxLvl => _spawnerParams.Count;
 
-        public bool TryGetParams(int level, out SpawnerParams param)
+        public SpawnerParams GetParams(int level)
         {
-            param = default;
+            if (level < 1) return _spawnerParams[0];
 
-            if (level < 1 || level > _spawnerParams.Count)
-                return false;
+            if (level > _spawnerParams.Count) return _spawnerParams[^1];
 
-            param = _spawnerParams[level - 1];
-            return true;
+            return _spawnerParams[level - 1];
         }
 
 #if UNITY_EDITOR
@@ -81,7 +79,7 @@ namespace _Project._Code.Meta.DataConfig
 #endif
     public interface ISpawnerConfig
     {
-        public bool TryGetParams(int level, out SpawnerParams param);
+        public SpawnerParams GetParams(int level);
         public int MaxLvl { get; }
     }
 }

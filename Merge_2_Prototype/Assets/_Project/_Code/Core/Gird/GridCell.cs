@@ -14,6 +14,7 @@ namespace _Project._Code.Core.Gird
         //вынести в конфиг
         private Color _defaultColor = Color.white;
         private Color _selectedColor = Color.chartreuse;
+        
         private ISpawner _spawner;
         
         public void Initialize(GridPosition gridPosition, float gridScale, ISpawner spawner = null)

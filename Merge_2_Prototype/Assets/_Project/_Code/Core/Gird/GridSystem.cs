@@ -40,9 +40,6 @@ namespace _Project._Code.Core.Gird
             }
             
             ScaleGridToScreen();
-            //test
-            AddObjectToRandomGridCell(1, 100);
-
         }
 
         public void AddObjectToRandomGridCell(int spawnerLvl, float chanceOnSameLvlSpawn)
@@ -83,9 +80,9 @@ namespace _Project._Code.Core.Gird
         private void AddObjectToGrid(GridPosition gridPosition, int spawnerLvl)
         {
             GridCell gridCell = TryGetGridCellFromPosition(gridPosition);
-            if (gridCell && _spawnerConfig.TryGetParams(spawnerLvl, out SpawnerParams spawnerParams))
+            if (gridCell)
             {
-                ISpawner spawner = _spawnerPool.Spawn(gridCell, spawnerParams);
+                ISpawner spawner = _spawnerPool.Spawn(gridCell, _spawnerConfig.GetParams(spawnerLvl));
                 gridCell.AddSpawner(spawner);
             }
         }
