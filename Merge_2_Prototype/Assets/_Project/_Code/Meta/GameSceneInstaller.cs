@@ -12,12 +12,14 @@ namespace _Project._Code.Meta
         [SerializeField] private GridCell _gridCellPrefab;
         [SerializeField] private Spawner _spawner;
         [SerializeField] private GridConfig _gridConfig;
+        [SerializeField] private SpawnerConfig _spawnerConfig;
         
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<InputSystemService>().AsSingle().NonLazy();
             
             Container.Bind<IGridConfig>().FromInstance(_gridConfig).AsSingle();
+            Container.Bind<ISpawnerConfig>().FromInstance(_spawnerConfig).AsSingle();
             
             Container.BindInterfacesTo<GridSystem>().AsSingle();
 
@@ -25,7 +27,7 @@ namespace _Project._Code.Meta
             
             Container.BindFactory<GridCell, GridCell.Factory>().FromComponentInNewPrefab(_gridCellPrefab);
             
-            Container.BindMemoryPool<Spawner, SpawnerPool>().FromComponentInNewPrefab(_spawner);
+            Container.BindMemoryPool<ISpawner, SpawnerPool>().FromComponentInNewPrefab(_spawner);
         }
     }
 }

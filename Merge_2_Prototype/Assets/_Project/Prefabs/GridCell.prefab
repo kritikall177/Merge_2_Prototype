@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff9e8de89d740f0bfb44be95b9c044c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Core.Gird.GridCell
+  _sprite: {fileID: 4401152534122650410}
 --- !u!61 &5745040602211305938
 BoxCollider2D:
   m_ObjectHideFlags: 0

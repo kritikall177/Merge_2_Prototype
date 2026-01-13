@@ -10,11 +10,15 @@ namespace _Project._Code
     public class TriggerRayEmitter : IInitializable, IDisposable
     {
         private IInputSystem _inputSystem;
+        private IGridSystem _gridSystem;
+        
         private Camera _camera;
+        private IGridCell _selectedGridCell = null;
 
-        public TriggerRayEmitter(IInputSystem  inputSystem)
+        public TriggerRayEmitter(IInputSystem  inputSystem,  IGridSystem gridSystem)
         {
             _inputSystem = inputSystem;
+            _gridSystem = gridSystem;
         }
         
         public void Initialize()
@@ -33,12 +37,29 @@ namespace _Project._Code
 
         private void OnSelectEvent()
         {
-            RayHit()?.SelectGridObject();
+            _selectedGridCell = RayHit();
+            _selectedGridCell?.SelectGridCell();
         }
         
         private void OnTriggerEvent()
         {
-            RayHit()?.TriggerGridCell();
+            IGridCell gridCell = RayHit();
+
+            if (gridCell != null)
+            {
+                if (_selectedGridCell  != null && _selectedGridCell != gridCell)
+                {
+                    _gridSystem.TryMergeGridPosition(_selectedGridCell.GridPosition, gridCell.GridPosition);
+                    _selectedGridCell.UnselectGridCell();
+                    _selectedGridCell =  null;
+                    return;
+                }
+
+                if (_selectedGridCell == null)
+                {
+                    gridCell.TriggerGridCell();
+                }
+            }
         }
         
 

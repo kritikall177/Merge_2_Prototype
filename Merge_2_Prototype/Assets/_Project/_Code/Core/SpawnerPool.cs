@@ -1,30 +1,26 @@
 ﻿using _Project._Code.Core.Gird;
+using _Project._Code.Meta.DataConfig;
 using UnityEngine;
 using Zenject;
 
 namespace _Project._Code.Core
 {
-    public class SpawnerPool : MemoryPool<GridCell, Spawner>
+    public class SpawnerPool : MemoryPool<GridCell, SpawnerParams, ISpawner>
     {
-        protected override void OnSpawned(Spawner spawner)
+        protected override void OnSpawned(ISpawner spawner)
         {
-            spawner.gameObject.SetActive(true);
+            spawner.GameObject.SetActive(true);
         }
 
-        protected override void Reinitialize(GridCell gridCell, Spawner spawner)
+        protected override void Reinitialize(GridCell gridCell, SpawnerParams spawnerParams, ISpawner spawner)
         {
-            spawner.transform.SetParent(gridCell.transform, false);
+            spawner.SetParams(spawnerParams);
+            spawner.GameObject.transform.SetParent(gridCell.transform, false);
         }
 
-        protected override void OnDestroyed(Spawner spawner)
+        protected override void OnDespawned(ISpawner spawner)
         {
-            // Called immediately after the item is removed from the pool without also being spawned
-            // This occurs when the pool is shrunk either by using WithMaxSize or by explicitly shrinking the pool by calling the `ShrinkBy` / `Resize methods
-        }
-
-        protected override void OnDespawned(Spawner spawner)
-        {
-            spawner.gameObject.SetActive(false);
+            spawner.GameObject.SetActive(false);
         }
     }
 }

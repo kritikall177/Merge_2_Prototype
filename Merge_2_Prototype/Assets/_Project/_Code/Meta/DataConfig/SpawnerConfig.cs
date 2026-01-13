@@ -13,6 +13,8 @@ namespace _Project._Code.Meta.DataConfig
 
         public IReadOnlyList<SpawnerParams> SpawnerParams => _spawnerParams;
 
+        public int MaxLvl => _spawnerParams.Count;
+
         public bool TryGetParams(int level, out SpawnerParams param)
         {
             param = default;
@@ -79,6 +81,7 @@ namespace _Project._Code.Meta.DataConfig
 #endif
     public interface ISpawnerConfig
     {
-        bool TryGetParams(int level, out SpawnerParams param);
+        public bool TryGetParams(int level, out SpawnerParams param);
+        public int MaxLvl { get; }
     }
 }

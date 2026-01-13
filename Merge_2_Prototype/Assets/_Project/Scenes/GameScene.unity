@@ -415,6 +415,7 @@ MonoBehaviour:
   _gridCellPrefab: {fileID: 4694711058327682889, guid: 260da0010ef8b504994fa62fe074d59d, type: 3}
   _spawner: {fileID: 7329812595472352329, guid: d520044d315892b4ba44e78627d63b53, type: 3}
   _gridConfig: {fileID: 11400000, guid: 34604c7cdc6f6f54aaecdf7820fee366, type: 2}
+  _spawnerConfig: {fileID: 11400000, guid: fe26dd79e5e679447a274c1a88611e0f, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

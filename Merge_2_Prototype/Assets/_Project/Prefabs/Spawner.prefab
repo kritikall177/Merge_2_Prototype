@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74102970df754612854e0649d6b6ea5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Core.Spawner
+  _lvlText: {fileID: 355972000797788226}
 --- !u!1 &5208348365146896877
 GameObject:
   m_ObjectHideFlags: 0
